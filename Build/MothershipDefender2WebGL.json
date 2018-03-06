@@ -1,0 +1,15 @@
+{
+"companyName": "Nalsai",
+"productName": "Mothership Defender 2",
+"dataUrl": "MothershipDefender2WebGL.data.unityweb",
+"asmCodeUrl": "MothershipDefender2WebGL.asm.code.unityweb",
+"asmMemoryUrl": "MothershipDefender2WebGL.asm.memory.unityweb",
+"asmFrameworkUrl": "MothershipDefender2WebGL.asm.framework.unityweb",
+"TOTAL_MEMORY": 268435456,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"backgroundUrl": "MothershipDefender2WebGL.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF",
+"cacheControl": {"dataUrl": "must-revalidate"}
+}

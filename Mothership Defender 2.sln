@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mothership Defender 2.Plugins", "Mothership Defender 2.Plugins.csproj", "{A9B34F70-2472-4D33-2DB2-7014813A987E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mothership Defender 2", "Mothership Defender 2.csproj", "{8A7438BA-3849-29C1-C41A-849A72009FA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mothership Defender 2.Editor.Plugins", "Mothership Defender 2.Editor.Plugins.csproj", "{E7A684FA-0CAB-B75E-4C28-921DA9F530A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9B34F70-2472-4D33-2DB2-7014813A987E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9B34F70-2472-4D33-2DB2-7014813A987E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9B34F70-2472-4D33-2DB2-7014813A987E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9B34F70-2472-4D33-2DB2-7014813A987E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A7438BA-3849-29C1-C41A-849A72009FA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A7438BA-3849-29C1-C41A-849A72009FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A7438BA-3849-29C1-C41A-849A72009FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A7438BA-3849-29C1-C41A-849A72009FA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A684FA-0CAB-B75E-4C28-921DA9F530A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A684FA-0CAB-B75E-4C28-921DA9F530A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A684FA-0CAB-B75E-4C28-921DA9F530A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A684FA-0CAB-B75E-4C28-921DA9F530A9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
