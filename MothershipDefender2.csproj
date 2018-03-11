@@ -312,7 +312,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\Destroy.cs" />
+    <Compile Include="Assets\FPS&amp;Stats Monitor\Scripts\ActionStorage.cs" />
+    <Compile Include="Assets\FPS&amp;Stats Monitor\Scripts\InfoGatherer.cs" />
+    <Compile Include="Assets\FPS&amp;Stats Monitor\Scripts\InfoGathererInspector.cs" />
+    <Compile Include="Assets\Scripts\Destroyer.cs" />
     <Compile Include="Assets\Scripts\Direction.cs" />
     <Compile Include="Assets\Scripts\GameController.cs" />
     <Compile Include="Assets\Scripts\Mover.cs" />

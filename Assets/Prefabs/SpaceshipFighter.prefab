@@ -23,12 +23,11 @@ GameObject:
   - component: {fileID: 23487451777217044}
   - component: {fileID: 114518867743591336}
   - component: {fileID: 114406860503697632}
-  - component: {fileID: 114019336685838198}
   - component: {fileID: 64780379653402566}
   - component: {fileID: 54734211076280570}
   m_Layer: 0
   m_Name: SpaceshipFighter
-  m_TagString: SpaceshipFighter
+  m_TagString: Ship
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -182,17 +181,6 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &114019336685838198
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1536201149647536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a0f5526b2e4b304b9fd7e2a343f4f4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &114406860503697632
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -206,7 +194,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Explosion: {fileID: 100010, guid: 645413a00f7bd0242bbd6d0e5eb6f439, type: 2}
   BigExplosion: {fileID: 100010, guid: 031d08f52af1daa4f929b85221519426, type: 2}
-  gameController: {fileID: 0}
 --- !u!114 &114518867743591336
 MonoBehaviour:
   m_ObjectHideFlags: 1
