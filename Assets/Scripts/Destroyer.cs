@@ -1,11 +1,10 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Destroyer : MonoBehaviour
 {
     public GameObject Explosion;
     public GameObject BigExplosion;
-    
+
     void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Mothership")
@@ -41,7 +40,9 @@ public class Destroyer : MonoBehaviour
             {
                 Instantiate(BigExplosion, transform.position, transform.rotation);
                 Destroy(other.gameObject);
-                Destroy(gameObject);
+                GameObject[] Ships = GameObject.FindGameObjectsWithTag("Ship");
+                foreach (GameObject Ship in Ships)
+                    Destroy(Ship);
                 GameController.restart = true;
                 if (GameController.SFX == true)
                 {

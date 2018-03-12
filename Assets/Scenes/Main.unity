@@ -1926,7 +1926,7 @@ MonoBehaviour:
   SpaceshipFighter: {fileID: 1536201149647536, guid: 006a1fb486bcd4945b7fecf973b74277,
     type: 2}
   Spaceship2: {fileID: 1468999304977008, guid: e084a140139e62943956464d572c2b0b, type: 2}
-  MotherShip: {fileID: 1866069149056660, guid: f4ed14b48f3f6384789395bf7acfc684, type: 2}
+  Mothership: {fileID: 1866069149056660, guid: f4ed14b48f3f6384789395bf7acfc684, type: 2}
   Player: {fileID: 1799349777648490, guid: 5d208f8f648b40f40ba3de152df20729, type: 2}
   Pause: {fileID: 5930810}
   start: {fileID: 57888720}

@@ -15,11 +15,6 @@ public class MovetoCursor : MonoBehaviour
             Touch touch = Input.GetTouch(0);
             Pos = touch.position;
         }
-        else if (Application.platform == RuntimePlatform.IPhonePlayer)
-        {
-            Touch touch = Input.GetTouch(0);
-            Pos = touch.position;
-        }
         else
         {
             Pos = Input.mousePosition;

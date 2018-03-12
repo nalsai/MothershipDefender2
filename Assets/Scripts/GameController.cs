@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +8,7 @@ public class GameController : MonoBehaviour
     public GameObject Soundtrack;
     public GameObject SpaceshipFighter;
     public GameObject Spaceship2;
-    public GameObject MotherShip;
+    public GameObject Mothership;
     public GameObject Player;
     public GameObject Pause;
     public GameObject start;
@@ -18,7 +17,6 @@ public class GameController : MonoBehaviour
     public GameObject SettingsButton;
     public Text scoreText;
     public Text LivesText;
-    public int StartWait = 2;
     public static int score;
     public static int Lives;
     public static int Ships;
@@ -29,17 +27,13 @@ public class GameController : MonoBehaviour
     public static bool HardMode = false;
     public static bool SFX = true;
     public static bool Music = true;
+    int StartWait = 2;
     Vector3 RndmPstn;
     float width;
     float height;
 
     private void Start()
     {
-        Vector3 p = new Vector3();
-        p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-        width = p.x;
-        height = p.z;
-
         // deactivate Music on WebGL
         if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
@@ -61,26 +55,17 @@ public class GameController : MonoBehaviour
             if (Screen.orientation == ScreenOrientation.Portrait)
             {
                 Camera.main.orthographicSize = (float)3.5;
-                Vector3 p = new Vector3();
-                p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-                width = p.x;
-                height = p.z;
+                CheckScreenDimensions();
             }
             else if (Screen.orientation == ScreenOrientation.PortraitUpsideDown)
             {
                 Camera.main.orthographicSize = (float)3.5;
-                Vector3 p = new Vector3();
-                p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-                width = p.x;
-                height = p.z;
+                CheckScreenDimensions();
             }
             else
             {
                 Camera.main.orthographicSize = (float)2.81;
-                Vector3 p = new Vector3();
-                p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-                width = p.x;
-                height = p.z;
+                CheckScreenDimensions();
             }
         }
     }
@@ -130,7 +115,7 @@ public class GameController : MonoBehaviour
         Destroy(GameObject.Find("Spaceship(Clone)"));
         Destroy(GameObject.Find("Explosion(Clone)"));
         Destroy(GameObject.Find("ExplosionMobile(Clone)"));
-        Instantiate(MotherShip);
+        Instantiate(Mothership);
         Instantiate(Player);
         SettingsButton.SetActive(false);
         PauseButton.SetActive(true);
@@ -159,7 +144,7 @@ public class GameController : MonoBehaviour
     {
         PauseButton.SetActive(true);
         Pause.SetActive(false);
-        Instantiate(MotherShip);
+        Instantiate(Mothership);
         Instantiate(Player);
         noShip = true;
         Ships = 0;
@@ -171,9 +156,10 @@ public class GameController : MonoBehaviour
         {
             yield return new WaitUntil(() => noShip == true);
 
+            CheckScreenDimensions();
+
             // Choose where to spawn
-            int choose;
-            choose = Random.Range(0, 4);
+            int choose = Random.Range(0, 4);
             if (choose == 0)
             {
                 RndmPstn.x = Random.Range(-width, width);
@@ -196,31 +182,31 @@ public class GameController : MonoBehaviour
             }
             RndmPstn.y = 0;
 
-            noShip = false;
-
             // Spawn
             if (Random.Range(0, 4) == 0)
             {
-                Instantiate(Spaceship2, RndmPstn, transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, transform.position, 100, 0.0F)));
+                Instantiate(Spaceship2, RndmPstn, transform.rotation);
             }
             else
             {
-                Instantiate(SpaceshipFighter, RndmPstn, transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, transform.position, 100, 0.0F)));
+                Instantiate(SpaceshipFighter, RndmPstn, transform.rotation);
             }
+            noShip = false;
             Mover.speed += 1;
         }
     }
-    
+
     IEnumerator Spawn2()
     {
         yield return new WaitForSeconds(StartWait);
         while (true)
         {
-            yield return new WaitUntil(() => Ships <= 2);
+            yield return new WaitUntil(() => Ships < 3);
+
+            CheckScreenDimensions();
 
             // Choose where to spawn
-            int choose;
-            choose = Random.Range(0, 4);
+            int choose = Random.Range(0, 4);
             if (choose == 0)
             {
                 RndmPstn.x = Random.Range(-width, width);
@@ -243,17 +229,16 @@ public class GameController : MonoBehaviour
             }
             RndmPstn.y = 0;
 
-            Ships++;
-
             // Spawn
             if (Random.Range(0, 4) == 0)
             {
-                Instantiate(Spaceship2, RndmPstn, transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, transform.position, 100, 0.0F)));
+                Instantiate(Spaceship2, RndmPstn, transform.rotation);
             }
             else
             {
-                Instantiate(SpaceshipFighter, RndmPstn, transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, transform.position, 100, 0.0F)));
+                Instantiate(SpaceshipFighter, RndmPstn, transform.rotation);
             }
+            Ships++;
             Mover.speed += 1;
         }
     }
@@ -268,5 +253,12 @@ public class GameController : MonoBehaviour
         Cursor.visible = true;
         SettingsButton.SetActive(true);
         Restart.SetActive(true);
+    }
+    void CheckScreenDimensions()
+    {
+        Vector3 p = new Vector3();
+        p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        width = p.x;
+        height = p.z;
     }
 }
