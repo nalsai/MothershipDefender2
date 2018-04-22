@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2017
+# Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2.Plugins", "MothershipDefender2.Plugins.csproj", "{56B69951-67AB-B41D-5877-7F4BA42AA1A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "MothershipDefender2.csproj", "{B4C64B46-61B4-2981-1CAC-A69BF5251803}"

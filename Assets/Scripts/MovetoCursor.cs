@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
 public class MovetoCursor : MonoBehaviour
 {
@@ -10,12 +11,12 @@ public class MovetoCursor : MonoBehaviour
         Cursor.visible = false;
 
         // make the Player Sphere move to the Cursor
-        if (Application.platform == RuntimePlatform.Android)
+        try
         {
             Touch touch = Input.GetTouch(0);
             Pos = touch.position;
         }
-        else
+        catch
         {
             Pos = Input.mousePosition;
         }
