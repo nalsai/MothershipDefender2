@@ -34,11 +34,18 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        // deactivate Music on WebGL
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+
+        Application.targetFrameRate = 240;
+
+        if (Application.platform == RuntimePlatform.Android)
+        {
+            Application.targetFrameRate = 60;
+        }
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             Soundtrack.SetActive(false);
             MusicToogle.GetComponent<Toggle>().isOn = false;
+            Application.targetFrameRate = 60;
         }
         Ships = 3;
         StartCoroutine(Spawn());

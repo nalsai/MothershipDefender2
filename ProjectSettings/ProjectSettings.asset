@@ -46,7 +46,7 @@ PlayerSettings:
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1280
-  defaultScreenHeight: 720
+  defaultScreenHeight: 800
   defaultScreenWidthWeb: 1080
   defaultScreenHeightWeb: 720
   m_StereoRenderingPath: 0
@@ -66,7 +66,7 @@ PlayerSettings:
   useOSAutorotation: 1
   use32BitDisplayBuffer: 0
   preserveFramebufferAlpha: 0
-  disableDepthAndStencilBuffers: 1
+  disableDepthAndStencilBuffers: 0
   androidBlitType: 2
   defaultIsFullScreen: 0
   defaultIsNativeResolution: 1
@@ -130,7 +130,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 2.2.2
+  bundleVersion: 2.2.3
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
