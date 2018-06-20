@@ -41,12 +41,14 @@ public class GameController : MonoBehaviour
         {
             Application.targetFrameRate = 60;
         }
-            if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
         {
             Soundtrack.SetActive(false);
             MusicToogle.GetComponent<Toggle>().isOn = false;
             Application.targetFrameRate = 60;
         }
+        else
+            Soundtrack.SetActive(true);
         Ships = 3;
         StartCoroutine(Spawn());
     }
@@ -57,24 +59,6 @@ public class GameController : MonoBehaviour
             StartCoroutine(RestartM());
         scoreText.text = "Score: " + score;
         LivesText.text = "Lives:  " + Lives;
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Screen.orientation == ScreenOrientation.Portrait)
-            {
-                Camera.main.orthographicSize = (float)3.5;
-                CheckScreenDimensions();
-            }
-            else if (Screen.orientation == ScreenOrientation.PortraitUpsideDown)
-            {
-                Camera.main.orthographicSize = (float)3.5;
-                CheckScreenDimensions();
-            }
-            else
-            {
-                Camera.main.orthographicSize = (float)2.81;
-                CheckScreenDimensions();
-            }
-        }
     }
 
     public void EnableDisableSFX()
