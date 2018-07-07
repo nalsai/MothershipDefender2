@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +37,6 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-
         Application.targetFrameRate = 240;
 
         if (Application.platform == RuntimePlatform.Android)
@@ -50,6 +52,25 @@ public class GameController : MonoBehaviour
         else
             Soundtrack.SetActive(true);
         Ships = 3;
+
+        if (File.Exists(Application.persistentDataPath + "/setttings.sav"))
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/settings.sav", FileMode.Open);
+            //SaveFile data = (SaveFile)bf.Deserialize(file);
+            file.Close();
+            //bool SetMusic = data.Music;
+            //bool SetSFX = data.SFX;
+            //bool SetLives = data.Lives;
+            //bool SetHard = data.Hard;
+            //bool SetFPS = data.FPS;
+            print("File loaded from: " + Application.persistentDataPath);
+        }
+        else
+        {
+            print("File doesn't exist in: " + Application.persistentDataPath);
+        }
+
         StartCoroutine(Spawn());
     }
 
@@ -125,7 +146,7 @@ public class GameController : MonoBehaviour
         Ships = 3;
         Pause.SetActive(true);
         Destroy(GameObject.Find("Player(Clone)"));
-        Destroy(GameObject.Find("Mother Ship(Clone)"));
+        Destroy(GameObject.Find("Mothership(Clone)"));
         GameObject[] AShips = GameObject.FindGameObjectsWithTag("Ship");
         foreach (GameObject Ship in AShips)
             Destroy(Ship);

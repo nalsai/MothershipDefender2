@@ -62,12 +62,12 @@ public class Destroyer : MonoBehaviour
 
             if (GameController.SFX == true && transform.name == "SpaceshipFighter(Clone)")
             {
-                AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
+                AudioSource audio = GameObject.Find("VerySmallExplosionSFX").GetComponent<AudioSource>();
                 audio.Play();
             }
             else if (GameController.SFX == true)
             {
-                AudioSource audio = GameObject.Find("VerySmallExplosionSFX").GetComponent<AudioSource>();
+                AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
                 audio.Play();
             }
         }
