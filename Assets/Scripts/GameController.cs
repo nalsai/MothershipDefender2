@@ -1,13 +1,10 @@
 ﻿
 using System.Collections;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-    public GameObject MusicToogle;
     public GameObject Soundtrack;
     public GameObject SpaceshipFighter;
     public GameObject Spaceship2;
@@ -22,14 +19,20 @@ public class GameController : MonoBehaviour
     public Text LivesText;
     public static int score;
     public static int Lives;
-    public static int Ships;
-    public static bool LivesA;
+    public static int Ships = 3;
     public static bool noShip;
     public static bool restart;
     public static bool endpause;
-    public static bool HardMode = false;
-    public static bool SFX = true;
+
+    public GameObject MusicToogle;
+    public GameObject SFXToogle;
+    public GameObject Liv3sToogle;
+    public GameObject HardModeToogle;
     public static bool Music = true;
+    public static bool SFX = true;
+    public static bool Liv3s;
+    public static bool HardMode;
+
     int StartWait = 2;
     Vector3 RndmPstn;
     float width;
@@ -51,25 +54,37 @@ public class GameController : MonoBehaviour
         }
         else
             Soundtrack.SetActive(true);
-        Ships = 3;
 
-        if (File.Exists(Application.persistentDataPath + "/setttings.sav"))
+        // Load Settings
+        //PlayerPrefs.SetString("FirstRun", "true");
+        if (PlayerPrefs.GetString("FirstRun") == "false" == false)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            FileStream file = File.Open(Application.persistentDataPath + "/settings.sav", FileMode.Open);
-            //SaveFile data = (SaveFile)bf.Deserialize(file);
-            file.Close();
-            //bool SetMusic = data.Music;
-            //bool SetSFX = data.SFX;
-            //bool SetLives = data.Lives;
-            //bool SetHard = data.Hard;
-            //bool SetFPS = data.FPS;
-            print("File loaded from: " + Application.persistentDataPath);
+            PlayerPrefs.SetInt("Music", 1);
+            PlayerPrefs.SetInt("SFX", 1);
+            PlayerPrefs.SetInt("Liv3s", 0);
+            PlayerPrefs.SetInt("HardMode", 0);
+            PlayerPrefs.SetString("FirstRun", "false");
+        }
+
+        SFX = PlayerPrefs.GetInt("SFX") == 1 ? true : false;
+        Music = PlayerPrefs.GetInt("Music") == 1 ? true : false;
+        Liv3s = PlayerPrefs.GetInt("Liv3s") == 1 ? true : false;
+        HardMode = PlayerPrefs.GetInt("HardMode") == 1 ? true : false;
+
+        Liv3sToogle.GetComponent<Toggle>().isOn = Liv3s;
+        HardModeToogle.GetComponent<Toggle>().isOn = HardMode;
+        MusicToogle.GetComponent<Toggle>().isOn = Music;
+
+        Debug.Log(SFX);
+        if(SFX == true)
+        {
+            SFXToogle.GetComponent<Toggle>().isOn = true;
         }
         else
         {
-            print("File doesn't exist in: " + Application.persistentDataPath);
+            SFXToogle.GetComponent<Toggle>().isOn = false;
         }
+        Debug.Log(SFX);
 
         StartCoroutine(Spawn());
     }
@@ -82,31 +97,48 @@ public class GameController : MonoBehaviour
         LivesText.text = "Lives:  " + Lives;
     }
 
-    public void EnableDisableSFX()
+    public void ToggleMusic()
+    {
+        if (Music == true)
+        {
+            Music = false;
+        }
+        else if (Music == false)
+        {
+            Music = true;
+        }
+        PlayerPrefs.SetInt("Music", Music ? 1 : 0);
+    }
+
+    public void ToggleSFX()
     {
         if (SFX == true)
         {
             SFX = false;
+            PlayerPrefs.SetInt("SFX", 0);
         }
         else if (SFX == false)
         {
             SFX = true;
+            PlayerPrefs.SetInt("SFX", 1);
         }
+        //PlayerPrefs.SetInt("SFX", SFX ? 1 : 0);
     }
 
-    public void EnableDisableLives()
+    public void ToggleLiv3s()
     {
-        if (LivesA == true)
+        if (Liv3s == true)
         {
-            LivesA = false;
+            Liv3s = false;
         }
-        else if (LivesA == false)
+        else if (Liv3s == false)
         {
-            LivesA = true;
+            Liv3s = true;
         }
+        PlayerPrefs.SetInt("Liv3s", Liv3s ? 1 : 0);
     }
 
-    public void EnableDisableHardMode()
+    public void ToggleHardMode()
     {
         if (HardMode == true)
         {
@@ -120,6 +152,7 @@ public class GameController : MonoBehaviour
             StopAllCoroutines();
             StartCoroutine(Spawn2());
         }
+        PlayerPrefs.SetInt("HardMode", HardMode ? 1 : 0);
     }
 
     public void StartGame()

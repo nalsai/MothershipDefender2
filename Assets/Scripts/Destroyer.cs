@@ -24,7 +24,7 @@ public class Destroyer : MonoBehaviour
                     audio.Play();
                 }
             }
-            else if (GameController.LivesA == true)
+            else if (GameController.Liv3s == true)
             {
                 Instantiate(Explosion, transform.position, transform.rotation);
                 if (GameController.SFX == true)

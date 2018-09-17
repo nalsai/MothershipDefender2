@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "Assembly-CSharp-firstpass.csproj", "{B58AC6D8-0FA9-F1FC-2526-E1ADEE4C31D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-firstpass", "Assembly-CSharp-firstpass.csproj", "{B58AC6D8-0FA9-F1FC-2526-E1ADEE4C31D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "Unity.Analytics.DataPrivacy.csproj", "{0B3C9E6D-C440-0C39-D37B-26A89D406076}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Analytics.DataPrivacy", "Unity.Analytics.DataPrivacy.csproj", "{0B3C9E6D-C440-0C39-D37B-26A89D406076}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "Assembly-CSharp.csproj", "{505DA2CD-2287-670D-8B1D-7B60295E6E1A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{505DA2CD-2287-670D-8B1D-7B60295E6E1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "Assembly-CSharp-Editor-firstpass.csproj", "{0C46D37A-F6A0-468E-CF71-D0C6384CB676}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp-Editor-firstpass", "Assembly-CSharp-Editor-firstpass.csproj", "{0C46D37A-F6A0-468E-CF71-D0C6384CB676}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MothershipDefender2", "Unity.Analytics.DataPrivacy.Editor.csproj", "{60904D22-3BC3-959F-6716-9D3652AB596C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Analytics.DataPrivacy.Editor", "Unity.Analytics.DataPrivacy.Editor.csproj", "{60904D22-3BC3-959F-6716-9D3652AB596C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
