@@ -1,11 +1,23 @@
-﻿
-using System.Collections;
+﻿using System.Collections;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+
+    [System.Serializable]
+    public class Settings
+    {
+        public bool Music;
+        public bool SFX;
+        public bool ThreeLives;
+        public bool HardMode;
+    }
+
     public GameObject Soundtrack;
+    public GameObject LivesObject;
     public GameObject SpaceshipFighter;
     public GameObject Spaceship2;
     public GameObject Mothership;
@@ -24,16 +36,15 @@ public class GameController : MonoBehaviour
     public static bool restart;
     public static bool endpause;
 
+    public AudioClip DefaultAudioClip;
+    public AudioClip HardAudioClip;
     public GameObject MusicToogle;
-    public GameObject SFXToogle;
-    public GameObject Liv3sToogle;
-    public GameObject HardModeToogle;
-    public static bool Music = true;
-    public static bool SFX = true;
-    public static bool Liv3s;
-    public static bool HardMode;
+    public GameObject SFXToggle;
+    public GameObject ThreeLivesToggle;
+    public GameObject HardModeToggle;
+    public static Settings settings = new Settings();
 
-    int StartWait = 2;
+    const int StartWait = 2;
     Vector3 RndmPstn;
     float width;
     float height;
@@ -44,49 +55,49 @@ public class GameController : MonoBehaviour
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            Application.targetFrameRate = 60;
-        }
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            Soundtrack.SetActive(false);
-            MusicToogle.GetComponent<Toggle>().isOn = false;
-            Application.targetFrameRate = 60;
-        }
-        else
-            Soundtrack.SetActive(true);
-
-        // Load Settings
-        //PlayerPrefs.SetString("FirstRun", "true");
-        if (PlayerPrefs.GetString("FirstRun") == "false" == false)
-        {
-            PlayerPrefs.SetInt("Music", 1);
-            PlayerPrefs.SetInt("SFX", 1);
-            PlayerPrefs.SetInt("Liv3s", 0);
-            PlayerPrefs.SetInt("HardMode", 0);
-            PlayerPrefs.SetString("FirstRun", "false");
+            Application.targetFrameRate = 120;
         }
 
-        SFX = PlayerPrefs.GetInt("SFX") == 1 ? true : false;
-        Music = PlayerPrefs.GetInt("Music") == 1 ? true : false;
-        Liv3s = PlayerPrefs.GetInt("Liv3s") == 1 ? true : false;
-        HardMode = PlayerPrefs.GetInt("HardMode") == 1 ? true : false;
-
-        Liv3sToogle.GetComponent<Toggle>().isOn = Liv3s;
-        HardModeToogle.GetComponent<Toggle>().isOn = HardMode;
-        MusicToogle.GetComponent<Toggle>().isOn = Music;
-
-        Debug.Log(SFX);
-        if(SFX == true)
+        if (File.Exists(Application.persistentDataPath + "/settings.sav"))
         {
-            SFXToogle.GetComponent<Toggle>().isOn = true;
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/settings.sav", FileMode.Open);
+            settings = (Settings)bf.Deserialize(file);
+            file.Close();
         }
         else
         {
-            SFXToogle.GetComponent<Toggle>().isOn = false;
+            settings.Music = true;          // Music 
+            if (Application.platform == RuntimePlatform.WebGLPlayer)
+                settings.Music = false;
+            settings.SFX = true;            // SFX
+            settings.ThreeLives = false;    // 3 Lives
+            settings.HardMode = false;      // HardMode
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
+            bf.Serialize(file, settings);
+            file.Close();
         }
-        Debug.Log(SFX);
 
-        StartCoroutine(Spawn());
+        MusicToogle.GetComponent<Toggle>().SetIsOnWithoutNotify(settings.Music);
+        Soundtrack.SetActive(settings.Music);
+
+        SFXToggle.GetComponent<Toggle>().SetIsOnWithoutNotify(settings.SFX);
+
+        ThreeLivesToggle.GetComponent<Toggle>().SetIsOnWithoutNotify(settings.ThreeLives);
+        LivesObject.SetActive(settings.ThreeLives);
+
+        HardModeToggle.GetComponent<Toggle>().SetIsOnWithoutNotify(settings.HardMode);
+        if (!settings.HardMode)
+            StartCoroutine(Spawn());
+        else
+        {
+            StartCoroutine(Spawn2());
+            Soundtrack.GetComponent<AudioSource>().Stop();
+            Soundtrack.GetComponent<AudioSource>().clip = HardAudioClip;
+            if (settings.Music)
+                Soundtrack.GetComponent<AudioSource>().Play();
+        }
     }
 
     private void Update()
@@ -99,60 +110,82 @@ public class GameController : MonoBehaviour
 
     public void ToggleMusic()
     {
-        if (Music == true)
+        if (settings.Music == true)
         {
-            Music = false;
+            Soundtrack.SetActive(false);
+            settings.Music = false;
         }
-        else if (Music == false)
+        else if (settings.Music == false)
         {
-            Music = true;
+            Soundtrack.SetActive(true);
+            settings.Music = true;
         }
-        PlayerPrefs.SetInt("Music", Music ? 1 : 0);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
+        bf.Serialize(file, settings);
+        file.Close();
     }
 
     public void ToggleSFX()
     {
-        if (SFX == true)
+        if (settings.SFX)
         {
-            SFX = false;
-            PlayerPrefs.SetInt("SFX", 0);
+            settings.SFX = false;
         }
-        else if (SFX == false)
+        else
         {
-            SFX = true;
-            PlayerPrefs.SetInt("SFX", 1);
+            settings.SFX = true;
         }
-        //PlayerPrefs.SetInt("SFX", SFX ? 1 : 0);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
+        bf.Serialize(file, settings);
+        file.Close();
     }
 
     public void ToggleLiv3s()
     {
-        if (Liv3s == true)
+        if (settings.ThreeLives)
         {
-            Liv3s = false;
+            LivesObject.SetActive(false);
+            settings.ThreeLives = false;
         }
-        else if (Liv3s == false)
+        else
         {
-            Liv3s = true;
+            LivesObject.SetActive(true);
+            settings.ThreeLives = true;
         }
-        PlayerPrefs.SetInt("Liv3s", Liv3s ? 1 : 0);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
+        bf.Serialize(file, settings);
+        file.Close();
     }
 
     public void ToggleHardMode()
     {
-        if (HardMode == true)
+        if (settings.HardMode)
         {
-            HardMode = false;
+            settings.HardMode = false;
             StopAllCoroutines();
             StartCoroutine(Spawn());
+            Soundtrack.GetComponent<AudioSource>().Stop();
+            Soundtrack.GetComponent<AudioSource>().clip = DefaultAudioClip;
+            if (settings.Music)
+                Soundtrack.GetComponent<AudioSource>().Play();
         }
         else
         {
-            HardMode = true;
+            settings.HardMode = true;
             StopAllCoroutines();
             StartCoroutine(Spawn2());
+            Soundtrack.GetComponent<AudioSource>().Stop();
+            Soundtrack.GetComponent<AudioSource>().clip = HardAudioClip;
+            if (settings.Music)
+                Soundtrack.GetComponent<AudioSource>().Play();
         }
-        PlayerPrefs.SetInt("HardMode", HardMode ? 1 : 0);
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
+        bf.Serialize(file, settings);
+        file.Close();
     }
 
     public void StartGame()
@@ -301,8 +334,7 @@ public class GameController : MonoBehaviour
     }
     void CheckScreenDimensions()
     {
-        Vector3 p = new Vector3();
-        p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
+        Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
         width = p.x;
         height = p.z;
     }

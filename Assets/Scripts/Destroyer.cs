@@ -9,7 +9,7 @@ public class Destroyer : MonoBehaviour
     {
         if (other.tag == "Mothership")
         {
-            GameController.Lives = GameController.Lives - 1;
+            GameController.Lives -= 1;
             if (GameController.Lives == 0)
             {
                 Instantiate(BigExplosion, transform.position, transform.rotation);
@@ -18,16 +18,16 @@ public class Destroyer : MonoBehaviour
                 foreach (GameObject Ship in Ships)
                     Destroy(Ship);
                 GameController.restart = true;
-                if (GameController.SFX == true)
+                if (GameController.settings.SFX == true)
                 {
                     AudioSource audio = GameObject.Find("BigExplosionSFX").GetComponent<AudioSource>();
                     audio.Play();
                 }
             }
-            else if (GameController.Liv3s == true)
+            else if (GameController.settings.ThreeLives == true)
             {
                 Instantiate(Explosion, transform.position, transform.rotation);
-                if (GameController.SFX == true)
+                if (GameController.settings.SFX == true)
                 {
                     AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
                     audio.Play();
@@ -44,7 +44,7 @@ public class Destroyer : MonoBehaviour
                 foreach (GameObject Ship in Ships)
                     Destroy(Ship);
                 GameController.restart = true;
-                if (GameController.SFX == true)
+                if (GameController.settings.SFX == true)
                 {
                     AudioSource audio = GameObject.Find("BigExplosionSFX").GetComponent<AudioSource>();
                     audio.Play();
@@ -60,12 +60,12 @@ public class Destroyer : MonoBehaviour
             GameController.Ships -= 1;
             Instantiate(Explosion, transform.position, transform.rotation);
 
-            if (GameController.SFX == true && transform.name == "SpaceshipFighter(Clone)")
+            if (GameController.settings.SFX == true && transform.name == "SpaceshipFighter(Clone)")
             {
                 AudioSource audio = GameObject.Find("VerySmallExplosionSFX").GetComponent<AudioSource>();
                 audio.Play();
             }
-            else if (GameController.SFX == true)
+            else if (GameController.settings.SFX == true)
             {
                 AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
                 audio.Play();
