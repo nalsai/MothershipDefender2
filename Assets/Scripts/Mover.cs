@@ -9,6 +9,7 @@ public class Mover : MonoBehaviour
         // Rotate towards the Mother Ship
         transform.rotation = Quaternion.LookRotation(Vector3.RotateTowards(transform.forward, transform.position, 100f, 0.0F));
     }
+
     void Update()
     {
         // Move towards the Mother Ship

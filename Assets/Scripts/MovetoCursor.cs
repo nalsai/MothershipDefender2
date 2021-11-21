@@ -7,14 +7,12 @@ public class MovetoCursor : MonoBehaviour
 
     void Update()
     {
-        // make the Cursor invisible
         Cursor.visible = false;
 
         // make the Player Sphere move to the Cursor
         try
         {
-            Touch touch = Input.GetTouch(0);
-            Pos = touch.position;
+            Pos = Input.GetTouch(0).position;
         }
         catch
         {

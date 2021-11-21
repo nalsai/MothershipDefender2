@@ -51,11 +51,11 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = 240;
+        Application.targetFrameRate = Screen.currentResolution.refreshRate*2;
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            Application.targetFrameRate = 120;
+            Application.targetFrameRate = Screen.currentResolution.refreshRate;
         }
 
         if (File.Exists(Application.persistentDataPath + "/settings.sav"))
@@ -200,7 +200,14 @@ public class GameController : MonoBehaviour
         Restart.SetActive(false);
         start.SetActive(false);
         score = 0;
-        Lives = 3;
+        if (settings.ThreeLives)
+        {
+            Lives = 3;
+        }
+        else
+        {
+            Lives = 1;
+        }
         Mover.speed = 10;
         noShip = true;
         Ships = 0;

@@ -10,65 +10,44 @@ public class Destroyer : MonoBehaviour
         if (other.tag == "Mothership")
         {
             GameController.Lives -= 1;
-            if (GameController.Lives == 0)
+            if (GameController.Lives <= 0)
             {
-                Instantiate(BigExplosion, transform.position, transform.rotation);
-                Destroy(other.gameObject);
-                GameObject[] Ships = GameObject.FindGameObjectsWithTag("Ship");
-                foreach (GameObject Ship in Ships)
-                    Destroy(Ship);
                 GameController.restart = true;
-                if (GameController.settings.SFX == true)
-                {
-                    AudioSource audio = GameObject.Find("BigExplosionSFX").GetComponent<AudioSource>();
-                    audio.Play();
-                }
+                Destroy(other.gameObject);
+                foreach (GameObject ship in GameObject.FindGameObjectsWithTag("Ship"))
+                    Destroy(ship);
+                Instantiate(BigExplosion, transform.position, transform.rotation);
+                if (GameController.settings.SFX)
+                    GameObject.Find("BigExplosionSFX").GetComponent<AudioSource>().Play();
             }
             else if (GameController.settings.ThreeLives == true)
             {
-                Instantiate(Explosion, transform.position, transform.rotation);
-                if (GameController.settings.SFX == true)
-                {
-                    AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
-                    audio.Play();
-                }
-                Destroy(gameObject);
                 GameController.noShip = true;
                 GameController.Ships -= 1;
+                Destroy(gameObject);
+                Instantiate(Explosion, transform.position, transform.rotation);
+                if (GameController.settings.SFX)
+                    GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>().Play();
             }
-            else
-            {
-                Instantiate(BigExplosion, transform.position, transform.rotation);
-                Destroy(other.gameObject);
-                GameObject[] Ships = GameObject.FindGameObjectsWithTag("Ship");
-                foreach (GameObject Ship in Ships)
-                    Destroy(Ship);
-                GameController.restart = true;
-                if (GameController.settings.SFX == true)
-                {
-                    AudioSource audio = GameObject.Find("BigExplosionSFX").GetComponent<AudioSource>();
-                    audio.Play();
-                }
-            }
-
         }
-        if (other.tag == "Player")
+        else if (other.tag == "Player")
         {
-            Destroy(gameObject);
             GameController.score++;
             GameController.noShip = true;
             GameController.Ships -= 1;
+            Destroy(gameObject);
             Instantiate(Explosion, transform.position, transform.rotation);
-
-            if (GameController.settings.SFX == true && transform.name == "SpaceshipFighter(Clone)")
+            if (GameController.settings.SFX)
             {
-                AudioSource audio = GameObject.Find("VerySmallExplosionSFX").GetComponent<AudioSource>();
-                audio.Play();
-            }
-            else if (GameController.settings.SFX == true)
-            {
-                AudioSource audio = GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>();
-                audio.Play();
+                switch (transform.name)
+                {
+                    case "SpaceshipFighter(Clone)":
+                        GameObject.Find("VerySmallExplosionSFX").GetComponent<AudioSource>().Play();
+                        break;
+                    default:
+                        GameObject.Find("SmallExplosionSFX").GetComponent<AudioSource>().Play();
+                        break;
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ namespace UnityStandardAssets.Utility
         private Text m_Text;
         float deltaTime = 0.0f;
         int fps;
+
         private void Start()
         {
             m_FpsNextPeriod = Time.realtimeSinceStartup + fpsMeasurePeriod;
@@ -23,6 +24,7 @@ namespace UnityStandardAssets.Utility
         {
             deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
         }
+
         private void FixedUpdate()
         {
             if (Time.realtimeSinceStartup > m_FpsNextPeriod)
