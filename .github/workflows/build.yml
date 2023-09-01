@@ -14,7 +14,7 @@ env:
 jobs:
   build-linux:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -46,13 +46,13 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           file: build/${{ env.name }}.tar.xz
-          repo_token: ${{ secrets.NALSAIBOT_TOKEN }}
           tag: ${{ github.ref }}
           body: ${{ env.release_body }}
           repo_name: ${{ env.release_repo }}
 
   build-android:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
@@ -80,17 +80,16 @@ jobs:
       - name: Prepare files for release
         run: |
           sudo mv build/Android/Android.apk build/Android/${{ env.name }}.apk
-          sudo mv build/Android/Android.main.obb build/Android/${{ env.name }}.main.obb
       - name: Upload to release
         uses: svenstaro/upload-release-action@v2
         with:
-          file: build/Android/${{ env.name }}.*
-          tag: ${{ github.ref }}
+          file: build/Android/${{ env.name }}.apk
           file_glob: true
           body: ${{ env.release_body }}
 
   build-windows:
     runs-on: windows-2019
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
