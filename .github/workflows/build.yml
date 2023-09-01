@@ -111,7 +111,6 @@ jobs:
           targetPlatform: StandaloneWindows64
       - name: Prepare files for release
         run: |
-          Remove-Item build/StandaloneWindows64/StandaloneWindows64_BackUpThisFolder_ButDontShipItWithYourGame -Recurse -Force
           Move-Item build/StandaloneWindows64/StandaloneWindows64_Data build/StandaloneWindows64/${{ env.name }}_Data
           Move-Item build/StandaloneWindows64/StandaloneWindows64.exe build/StandaloneWindows64/${{ env.name }}.exe
           Move-Item build/StandaloneWindows64 build/${{ env.name }}
