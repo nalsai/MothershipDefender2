@@ -1,0 +1,125 @@
+name: 🐧🪟 Build game
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  unity_version: "2022.3.7f1"
+  release_body: "uwu"
+  name: "MothershipDefender2"
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build game for Linux
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          versioning: Tag
+          unityVersion: ${{ env.unity_version }}
+          targetPlatform: StandaloneLinux64
+      - name: Prepare game files for release
+        run: |
+          sudo rm -rf build/StandaloneLinux64/StandaloneLinux64_BackUpThisFolder_ButDontShipItWithYourGame
+          sudo mv build/StandaloneLinux64/StandaloneLinux64_Data build/StandaloneLinux64/${{ env.name }}_Data
+          sudo mv build/StandaloneLinux64/StandaloneLinux64 build/StandaloneLinux64/${{ env.name }}.x86_64
+          sudo chmod a+x build/StandaloneLinux64/${{ env.name }}.x86_64
+          sudo mv build/StandaloneLinux64 build/${{ env.name }}
+          sudo tar -cJf build/${{ env.name }}.tar.xz -C build ${{ env.name }}
+      - name: Upload game to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: build/${{ env.name }}.tar.xz
+          repo_token: ${{ secrets.NALSAIBOT_TOKEN }}
+          tag: ${{ github.ref }}
+          body: ${{ env.release_body }}
+          repo_name: ${{ env.release_repo }}
+
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build game for Android
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          versioning: Tag
+          unityVersion: ${{ env.unity_version }}
+          targetPlatform: Android
+          androidKeystoreName: user.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+      - name: Prepare files for release
+        run: |
+          sudo mv build/Android/Android.apk build/Android/${{ env.name }}.apk
+          sudo mv build/Android/Android.main.obb build/Android/${{ env.name }}.main.obb
+      - name: Upload to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: build/Android/${{ env.name }}.*
+          tag: ${{ github.ref }}
+          file_glob: true
+          body: ${{ env.release_body }}
+
+  build-windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      - name: Build game for Windows
+        uses: game-ci/unity-builder@v2
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          versioning: Tag
+          unityVersion: ${{ env.unity_version }}
+          targetPlatform: StandaloneWindows64
+      - name: Prepare files for release
+        run: |
+          Remove-Item build/StandaloneWindows64/StandaloneWindows64_BackUpThisFolder_ButDontShipItWithYourGame -Recurse -Force
+          Move-Item build/StandaloneWindows64/StandaloneWindows64_Data build/StandaloneWindows64/${{ env.name }}_Data
+          Move-Item build/StandaloneWindows64/StandaloneWindows64.exe build/StandaloneWindows64/${{ env.name }}.exe
+          Move-Item build/StandaloneWindows64 build/${{ env.name }}
+          Compress-Archive -Path build/${{ env.name }} -DestinationPath build/${{ env.name }}.zip
+      - name: Upload to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: build/${{ env.name }}.zip
+          tag: ${{ github.ref }}
+          body: ${{ env.release_body }}
