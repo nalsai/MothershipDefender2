@@ -121,3 +121,4 @@ jobs:
           file: build/${{ env.name }}.zip
           tag: ${{ github.ref }}
           body: ${{ env.release_body }}
+          prerelease: ${{ github.ref_type != 'tag' }}
