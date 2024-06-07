@@ -1,5 +1,4 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MovetoCursor : MonoBehaviour
 {
@@ -9,15 +8,11 @@ public class MovetoCursor : MonoBehaviour
     {
         Cursor.visible = false;
 
-        // make the Player Sphere move to the Cursor
-        try
-        {
+        if (Input.touchCount > 0)
             Pos = Input.GetTouch(0).position;
-        }
-        catch
-        {
+        else if (Input.mousePresent)
             Pos = Input.mousePosition;
-        }
+
         Pos.z = 5;
         transform.position = Camera.main.ScreenToWorldPoint(Pos);
     }

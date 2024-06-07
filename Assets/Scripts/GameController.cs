@@ -42,7 +42,7 @@ public class GameController : MonoBehaviour
     public GameObject SFXToggle;
     public GameObject ThreeLivesToggle;
     public GameObject HardModeToggle;
-    public static Settings settings = new Settings();
+    public static Settings settings = new();
 
     const int StartWait = 2;
     Vector3 RndmPstn;
@@ -51,29 +51,30 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        Application.targetFrameRate = Screen.currentResolution.refreshRate*2;
+        Application.targetFrameRate = (int)Screen.currentResolution.refreshRateRatio.value * 2;
 
         if (Application.platform == RuntimePlatform.Android)
         {
-            Application.targetFrameRate = Screen.currentResolution.refreshRate;
+            Application.targetFrameRate = -1;
         }
 
         if (File.Exists(Application.persistentDataPath + "/settings.sav"))
         {
-            BinaryFormatter bf = new BinaryFormatter();
+            BinaryFormatter bf = new();
             FileStream file = File.Open(Application.persistentDataPath + "/settings.sav", FileMode.Open);
             settings = (Settings)bf.Deserialize(file);
             file.Close();
         }
         else
         {
-            settings.Music = true;          // Music 
+            settings.Music = true;
             if (Application.platform == RuntimePlatform.WebGLPlayer)
                 settings.Music = false;
-            settings.SFX = true;            // SFX
-            settings.ThreeLives = false;    // 3 Lives
-            settings.HardMode = false;      // HardMode
-            BinaryFormatter bf = new BinaryFormatter();
+            settings.SFX = true;
+            settings.ThreeLives = false;
+            settings.HardMode = false;
+
+            BinaryFormatter bf = new();
             FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
             bf.Serialize(file, settings);
             file.Close();
@@ -92,7 +93,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(Spawn());
         else
         {
-            StartCoroutine(Spawn2());
+            StartCoroutine(SpawnHardMode());
             Soundtrack.GetComponent<AudioSource>().Stop();
             Soundtrack.GetComponent<AudioSource>().clip = HardAudioClip;
             if (settings.Music)
@@ -102,7 +103,7 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (restart == true)
+        if (restart)
             StartCoroutine(RestartM());
         scoreText.text = "Score: " + score;
         LivesText.text = "Lives:  " + Lives;
@@ -110,17 +111,10 @@ public class GameController : MonoBehaviour
 
     public void ToggleMusic()
     {
-        if (settings.Music == true)
-        {
-            Soundtrack.SetActive(false);
-            settings.Music = false;
-        }
-        else if (settings.Music == false)
-        {
-            Soundtrack.SetActive(true);
-            settings.Music = true;
-        }
-        BinaryFormatter bf = new BinaryFormatter();
+        settings.Music = !settings.Music;
+        Soundtrack.SetActive(settings.Music);
+
+        BinaryFormatter bf = new();
         FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
         bf.Serialize(file, settings);
         file.Close();
@@ -128,33 +122,20 @@ public class GameController : MonoBehaviour
 
     public void ToggleSFX()
     {
-        if (settings.SFX)
-        {
-            settings.SFX = false;
-        }
-        else
-        {
-            settings.SFX = true;
-        }
-        BinaryFormatter bf = new BinaryFormatter();
+        settings.SFX = !settings.SFX;
+
+        BinaryFormatter bf = new();
         FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
         bf.Serialize(file, settings);
         file.Close();
     }
 
-    public void ToggleLiv3s()
+    public void ToggleThreeLives()
     {
-        if (settings.ThreeLives)
-        {
-            LivesObject.SetActive(false);
-            settings.ThreeLives = false;
-        }
-        else
-        {
-            LivesObject.SetActive(true);
-            settings.ThreeLives = true;
-        }
-        BinaryFormatter bf = new BinaryFormatter();
+        settings.ThreeLives = !settings.ThreeLives;
+        LivesObject.SetActive(settings.ThreeLives);
+        
+        BinaryFormatter bf = new();
         FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
         bf.Serialize(file, settings);
         file.Close();
@@ -162,27 +143,24 @@ public class GameController : MonoBehaviour
 
     public void ToggleHardMode()
     {
+        settings.HardMode = !settings.HardMode;
+        StopAllCoroutines();
+        Soundtrack.GetComponent<AudioSource>().Stop();
+
         if (settings.HardMode)
         {
-            settings.HardMode = false;
-            StopAllCoroutines();
-            StartCoroutine(Spawn());
-            Soundtrack.GetComponent<AudioSource>().Stop();
-            Soundtrack.GetComponent<AudioSource>().clip = DefaultAudioClip;
-            if (settings.Music)
-                Soundtrack.GetComponent<AudioSource>().Play();
+            StartCoroutine(SpawnHardMode());
+            Soundtrack.GetComponent<AudioSource>().clip = HardAudioClip;
         }
         else
         {
-            settings.HardMode = true;
-            StopAllCoroutines();
-            StartCoroutine(Spawn2());
-            Soundtrack.GetComponent<AudioSource>().Stop();
-            Soundtrack.GetComponent<AudioSource>().clip = HardAudioClip;
-            if (settings.Music)
-                Soundtrack.GetComponent<AudioSource>().Play();
+            StartCoroutine(Spawn());
+            Soundtrack.GetComponent<AudioSource>().clip = DefaultAudioClip;
         }
-        BinaryFormatter bf = new BinaryFormatter();
+        if (settings.Music)
+            Soundtrack.GetComponent<AudioSource>().Play();
+
+        BinaryFormatter bf = new();
         FileStream file = File.Create(Application.persistentDataPath + "/settings.sav");
         bf.Serialize(file, settings);
         file.Close();
@@ -212,6 +190,7 @@ public class GameController : MonoBehaviour
         noShip = true;
         Ships = 0;
     }
+    
     public void PauseGame()
     {
         PauseButton.SetActive(false);
@@ -225,6 +204,7 @@ public class GameController : MonoBehaviour
             Destroy(Ship);
         Cursor.visible = true;
     }
+
     public void EndPause()
     {
         PauseButton.SetActive(true);
@@ -281,7 +261,7 @@ public class GameController : MonoBehaviour
         }
     }
 
-    IEnumerator Spawn2()
+    IEnumerator SpawnHardMode()
     {
         yield return new WaitForSeconds(StartWait);
         while (true)
@@ -327,6 +307,7 @@ public class GameController : MonoBehaviour
             Mover.speed += 1;
         }
     }
+
     IEnumerator RestartM()
     {
         noShip = false;
@@ -339,6 +320,7 @@ public class GameController : MonoBehaviour
         SettingsButton.SetActive(true);
         Restart.SetActive(true);
     }
+
     void CheckScreenDimensions()
     {
         Vector3 p = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));

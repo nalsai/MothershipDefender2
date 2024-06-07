@@ -1586,7 +1586,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 590494568}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: ToggleLiv3s
+        m_MethodName: ToggleThreeLives
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -27,12 +27,11 @@ namespace UnityStandardAssets.Utility
 
         private void FixedUpdate()
         {
-            if (Time.realtimeSinceStartup > m_FpsNextPeriod)
-            {
-                fps = (int)(1.0f / deltaTime);
-                m_Text.text = string.Format(display, fps);
-                m_FpsNextPeriod += fpsMeasurePeriod;
-            }
+            if (Time.realtimeSinceStartup <= m_FpsNextPeriod) return;
+
+            fps = (int)(1.0f / deltaTime);
+            m_Text.text = string.Format(display, fps);
+            m_FpsNextPeriod += fpsMeasurePeriod;
         }
     }
 }
