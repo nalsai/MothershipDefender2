@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 env:
-  unity_version: "2022.3.32f1"
+  unity_version: "6000.0.42f1"
   release_body: "uwu"
   name: "MothershipDefender2"
 
@@ -48,7 +48,6 @@ jobs:
           file: build/${{ env.name }}.tar.xz
           tag: ${{ github.ref }}
           body: ${{ env.release_body }}
-          repo_name: ${{ env.release_repo }}
 
   build-android:
     runs-on: ubuntu-latest
