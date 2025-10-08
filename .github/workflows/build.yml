@@ -7,7 +7,7 @@ on:
       - 'v*.*.*'
 
 env:
-  unity_version: "6000.0.42f1"
+  unity_version: "6000.0.59f2"
   release_body: "uwu"
   name: "MothershipDefender2"
 
